@@ -88,7 +88,7 @@ var SAMPLE_CODE = new Map([
 var task = {
 	
 	start: function(){
-		task.show({
+		task.display({
 			require:{options:['S','ease'],type:['mkdn']},
 			template:`
 				#Preview {background:linear-gradient(to bottom left,white 75%,#dee 85%,#9aa);box-shadow:-1px -1px 1px lightgray;padding:5px}
@@ -96,40 +96,40 @@ var task = {
 				#Warning * {display:inline}
 			`
 		});
-		task.show([
+		task.display([
 			{id:"Preview"},
 			{id:"Sample Code"},
 			{id:"STAP",v:"\n",in:2}
 		]);
 		for(var i of SAMPLE_CODE.keys())
-			task.show([{id:"Sample Code",v:[{id:i,type:'btn'}]}]);
+			task.display([{id:"Sample Code",v:[{id:i,type:'btn'}]}]);
 	},
 	
 	userAction: function(time,element,value){
 		//TODO: ignore input, catch onkeydown
-		task.show([{id:'Warning',v:null}]); //remove any previously shown warning
+		task.display([{id:'Warning',v:null}]); //remove any previously shown warning
 		if(element=='STAP'){
 			try{
 				value=JSON.parse(value);
 				if(value.constructor===Array){
-					task.show([{id:'Preview',v:null},{id:'Preview',P:0,v:value}]);
+					task.display([{id:'Preview',v:null},{id:'Preview',P:0,v:value}]);
 				}else if(value.constructor===Object){
 					value.id='Preview';
 					value.P=0;
-					task.show([{id:'Preview',v:null},value]);
+					task.display([{id:'Preview',v:null},value]);
 				}
 			}catch(e){
-				task.show([{id:'Warning',v:'Invalid JSON string',emp2:1}]);
+				task.display([{id:'Warning',v:'Invalid JSON string',emp2:1}]);
 			}
 		}else{
 			if(SAMPLE_CODE.has(element)){
 				value=JSON.parse(SAMPLE_CODE.get(element));
 				if(value.constructor===Array){
-					task.show([{id:'STAP',v:SAMPLE_CODE.get(element)},{id:'Preview',v:null},{id:'Preview',P:0,v:value}]);
+					task.display([{id:'STAP',v:SAMPLE_CODE.get(element)},{id:'Preview',v:null},{id:'Preview',P:0,v:value}]);
 				}else if(value.constructor===Object){
 					value.id='Preview';
 					value.P=0;
-					task.show([{id:'STAP',v:SAMPLE_CODE.get(element)},{id:'Preview',v:null},value]);
+					task.display([{id:'STAP',v:SAMPLE_CODE.get(element)},{id:'Preview',v:null},value]);
 				}
 			}
 		}
@@ -139,5 +139,5 @@ var task = {
 
 ////////////////////////////////////////////////////////////////
 // line below added for node.js
-if(typeof(window)==='undefined'){task.end=function(){process.exit()};if(require.main===module){task.show=function(data){console.log(JSON.stringify(data))};process.stdin.on("data",function(s){let data;try{data=JSON.parse(s)}catch(e){console.log('{"error":"invalid JSON string"}');return}if(data.constructor!==Array||data.length!=3){console.log('{"error":"Invalid STAP 7 response. Expected [time,id,value]"}');return}task.userAction(data[0],data[1],data[2])});task.start()}else{exports.task=task}}
+if(typeof(window)==='undefined'){task.end=function(){process.exit()};if(require.main===module){task.display=function(data){console.log(JSON.stringify(data))};process.stdin.on("data",function(s){let data;try{data=JSON.parse(s)}catch(e){console.log('{"error":"invalid JSON string"}');return}if(data.constructor!==Array||data.length!=3){console.log('{"error":"Invalid STAP 7 response. Expected [time,id,value]"}');return}task.userAction(data[0],data[1],data[2])});task.start()}else{exports.task=task}}
 ////////////////////////////////////////////////////////////////
